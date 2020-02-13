@@ -233,8 +233,8 @@ resource "aws_codebuild_project" "this" {
   }
 
   source {
-    type = "CODEPIPELINE", 
-    buildspec = "ECS/buildspec.yaml"
+    type = "CODEPIPELINE"
+    buildspec = "ECS/buildspec.yml"
   }
 }
 

@@ -1,0 +1,8 @@
+.env
+**/.terraform/*
+*.tfstate
+*.backup
+.tfvars
+tags
+.bak
+.info

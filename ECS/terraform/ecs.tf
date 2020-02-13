@@ -82,35 +82,6 @@ data "aws_iam_policy_document" "task_role" {
   }
 }
 
-# allow events role to run ecs tasks
-data "aws_iam_policy_document" "events_ecs" {
-  statement {
-    effect = "Allow"
-    actions = ["ecs:RunTask"]
-    resources = ["arn:aws:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:task-definition/${aws_ecs_task_definition.this.family}:*"]
-
-    condition {
-      test = "StringLike"
-      variable = "ecs:cluster"
-      values = [aws_ecs_cluster.this.arn]
-    }
-  }
-}
-
-# allow events role to pass role to task execution role and app role
-data "aws_iam_policy_document" "pass_role" {
-  statement {
-    effect = "Allow"
-    actions = ["iam:PassRole"]
-
-    resources = [
-      aws_iam_role.task_role.arn,
-      ###################################################################################################
-      aws_iam_role.task_role.arn
-    ]
-  }
-}
-
 resource "aws_iam_role" "execution_role" {
   name               = "ecs-execution-role"
   assume_role_policy = data.aws_iam_policy_document.execution_assume_role_policy.json

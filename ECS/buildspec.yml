@@ -14,12 +14,14 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      - cd ./ECS
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
+      - cd ./ECS
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - aws ecs describe-task-definition --task-definition $TASKDEF | jq '.taskDefinition' > taskdef.json
@@ -27,6 +29,6 @@ phases:
       - printf '[{"name":"%s","imageUri":"%s"}]' $TASKDEF $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files:
-    - appspec.yaml
-    - taskdef.json
-    - imagedefinitions.json
+    - ECS/appspec.yaml
+    - ECS/taskdef.json
+    - ECS/imagedefinitions.json

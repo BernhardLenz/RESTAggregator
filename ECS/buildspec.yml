@@ -27,6 +27,8 @@ phases:
       - envsubst < appspec_template.yaml > appspec.yaml
       - printf '[{"name":"%s","imageUri":"%s"}]' $TASKDEF $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
+  discard-paths: yes
+  base-directory: ECS
   files:
     - appspec.yaml
     - taskdef.json
